@@ -26,9 +26,13 @@ class Repository implements IRepository {
   Future<String> getAnswer(String question, [bool lucky = true]) async {
     final translatedQuestion =
         (await translator.translate(question, to: 'ru')).text;
-    final answerDto = await webApi.getAnswer(translatedQuestion, lucky);
-    final translatedResponse =
-        (await translator.translate(answerDto.reading, to: 'ru')).text;
-    return translatedResponse;
+    try {
+      final answerDto = await webApi.getAnswer(translatedQuestion, lucky);
+      final translatedResponse =
+          (await translator.translate(answerDto!.reading, to: 'ru')).text;
+      return translatedResponse;
+    } catch (e) {
+      return 'Не получилось обработать ответ. Ошибка: $e';
+    }
   }
 }
