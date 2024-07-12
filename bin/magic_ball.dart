@@ -12,13 +12,10 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 import 'webapi.dart';
 
-
 Future<void> main() async {
   final IWebAPI webAPI = WebAPI();
-  Timer.periodic(const Duration(seconds: 2), (_) {
 
-  });
-  final stream = printCurTime();
+  final stream = currentTimeStream();
   stream.listen((value) => print(value));
 
   while (true) {
@@ -28,17 +25,17 @@ Future<void> main() async {
     if (input == null || input.isEmpty) {
       final advice = await webAPI.getAdvice();
       print(advice);
-    } else {
-      final answer = await webAPI.getAnswer(input);
-      print(answer);
+      return;
     }
+    final answer = await webAPI.getAnswer(input);
+    print(answer);
   }
 }
 
-Stream<String> printCurTime() async* {
+Stream<String> currentTimeStream() async* {
   while (true) {
     await Future.delayed(Duration(seconds: 1));
-    final formater = DateFormat('dd.MM HH:mm:ss').format(DateTime.now());
-    yield formater;
+    final formatter = DateFormat('dd.MM HH:mm:ss');
+    yield formatter.format(DateTime.now());
   }
 }
