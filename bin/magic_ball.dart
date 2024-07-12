@@ -10,10 +10,14 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:intl/intl.dart';
+import 'package:translator/translator.dart';
 import 'webapi.dart';
+import 'repository.dart';
 
 Future<void> main() async {
+  final translator = GoogleTranslator();
   final IWebAPI webAPI = WebAPI();
+  final IRepository repository = Repository(webAPI, translator);
 
   final stream = currentTimeStream();
   stream.listen((value) => print(value));
@@ -23,11 +27,11 @@ Future<void> main() async {
     String? input = stdin.readLineSync();
 
     if (input == null || input.isEmpty) {
-      final advice = await webAPI.getAdvice();
+      final advice = await repository.getAdvice();
       print(advice);
       break;
     }
-    final answer = await webAPI.getAnswer(input);
+    final answer = await repository.getAnswer(input);
     print(answer);
   }
 }
