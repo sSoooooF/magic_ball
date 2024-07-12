@@ -21,7 +21,6 @@ Future<void> main() async {
   print(someAnswer);
 }
 
-
 Stream<String> printCurTime() async* {
   while(true) {
     await Future.delayed(Duration(seconds: 1));
