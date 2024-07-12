@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'answer_dto.dart';
 
 abstract interface class IWebAPI {
   Future<String> getAdvice();
 
-  Future<String> getAnswer(String question, bool lucky);
+  Future<AnswerDto> getAnswer(String question, bool lucky);
 }
 
 class WebAPI implements IWebAPI {
@@ -22,25 +23,25 @@ class WebAPI implements IWebAPI {
         throw Exception('Failed to get advice');
       }
     } catch (e) {
-      return 'Error: $e';
+      throw 'Error: $e';
     }
   }
 
   @override
-  Future<String> getAnswer(String question, bool lucky) async {
+  Future<AnswerDto> getAnswer(String question, bool lucky) async {
     try {
       var url = Uri.https("eightballapi.com", '/api/biased',
           {'question': question, 'lucky': lucky.toString()});
 
       var response = await http.get(url);
       if (response.statusCode == 200) {
-        final Map<String, dynamic> decoder = jsonDecode(response.body);
-        return decoder["reading"];
+        final result = AnswerDto.fromJson(jsonDecode(response.body));
+        return result;
       } else {
         throw Exception('Failed to get answer');
       }
     } catch (e) {
-      return 'Error: $e';
+      throw 'Error: $e';
     }
   }
 }
