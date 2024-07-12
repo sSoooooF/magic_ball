@@ -6,7 +6,6 @@
 
 // Если ошибка, то печатаем её (press red button). Если ответ - печатаем тоже.
 import 'package:intl/intl.dart';
-import 'package:translator/translator.dart';
 import 'webapi.dart';
 
 Future<void> main() async {
