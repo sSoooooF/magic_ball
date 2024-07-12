@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'answer_dto.dart';
+import 'dtos/answer_dto.dart';
 
 abstract interface class IWebAPI {
   Future<String> getAdvice();
