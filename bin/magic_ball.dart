@@ -25,7 +25,7 @@ Future<void> main() async {
     if (input == null || input.isEmpty) {
       final advice = await webAPI.getAdvice();
       print(advice);
-      return;
+      break;
     }
     final answer = await webAPI.getAnswer(input);
     print(answer);
