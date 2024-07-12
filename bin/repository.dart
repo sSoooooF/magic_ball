@@ -1,7 +1,6 @@
 import 'package:translator/translator.dart';
 
-import 'webapi.dart'
-
+import 'webapi.dart';
 
 abstract interface class IRepository {
   Future<String> getAdvice();
@@ -16,19 +15,20 @@ class Repository implements IRepository {
   Repository(this.webApi, this.translator);
 
   @override
-  Future<String> getAdvice() async{
+  Future<String> getAdvice() async {
     final response = await webApi.getAdvice();
-    final translatedResponse = (await translator.translate(response, to: 'ru')).toString();
+    final translatedResponse =
+        (await translator.translate(response, to: 'ru')).text;
     return translatedResponse;
   }
 
   @override
   Future<String> getAnswer(String question, [bool lucky = true]) async {
-    final translatedQuestion = (await translator.translate(question, to: 'en')).toString();
-    final response = await webApi.getAnswer(question, lucky);
-    final translatedResponse = (await translator.translate(response, to: 'ru')).toString();
+    final translatedQuestion =
+        (await translator.translate(question, to: 'ru')).text;
+    final answerDto = await webApi.getAnswer(translatedQuestion, lucky);
+    final translatedResponse =
+        (await translator.translate(answerDto.reading, to: 'ru')).text;
     return translatedResponse;
   }
-
-
 }
