@@ -31,7 +31,8 @@ Future<void> main() async {
       print(advice);
       break;
     }
-    final answer = await repository.getAnswer(input);
+    final enInput = translator.translate(input, to: 'en').toString();
+    final answer = await repository.getAnswer(enInput);
     print(answer);
   }
 }
